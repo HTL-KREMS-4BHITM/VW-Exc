@@ -19,7 +19,6 @@ public class ForwartsMovementBehaviour : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
         _currentWayPoint = 0;
         _agent.SetDestination(_waypoints[_currentWayPoint].position);
     }
@@ -27,8 +26,8 @@ public class ForwartsMovementBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Vector3.Distance(_agent.transform.position, _agent.destination) < 0.1f)
-            GetNewDestination();   
+        if(Vector3.Distance(_agent.transform.position, _agent.destination) < 0.3f)
+            GetNewDestination();
     }
     
     void GetNewDestination(){

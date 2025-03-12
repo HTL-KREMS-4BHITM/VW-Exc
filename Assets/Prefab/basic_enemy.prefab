@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 845129461187284203}
   - component: {fileID: 7687424842484323158}
   - component: {fileID: 4803525009981369953}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: basic_enemy_emission_blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 2496900839902116654}
   - component: {fileID: 173820763528246820}
   - component: {fileID: -6592646107885417556}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: basic_enemy
   m_TagString: Robot
   m_Icon: {fileID: 0}
@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: 4675732785512809756}
   - component: {fileID: 4891203862974296986}
   - component: {fileID: 8428291682820238918}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: basic_enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 5680880813992889010}
   - component: {fileID: 6373324541636634664}
   - component: {fileID: 4932543797401849109}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: basic_enemy_wheels_back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -371,8 +371,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5937312a16b3ac4c9c85dc659c525ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotateAroundX: 0
-  RotateAroundY: 15
+  rotateVector: {x: 0, y: 0, z: 0}
+  rotateSpeed: 0
 --- !u!1 &9171754591586348893
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,7 +385,7 @@ GameObject:
   - component: {fileID: 2418519086626813987}
   - component: {fileID: 2306976022329426473}
   - component: {fileID: 1084228403444017055}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: basic_enemy_wheels_front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -472,5 +472,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5937312a16b3ac4c9c85dc659c525ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotateAroundX: 0
-  RotateAroundY: 15
+  rotateVector: {x: 0, y: 0, z: 0}
+  rotateSpeed: 0
