@@ -13,36 +13,43 @@ public class CrossbowTower : MonoBehaviour
     [SerializeField] private float rotationSpeed;
     [SerializeField] float _attackRange = 2.5f;
     [SerializeField] LayerMask enemyMask;
-    [SerializeField] Transform defaultpos;
 
     void Start()
     {
+        // Set The Default value => this code does not do what it is intendet to do one can remove it
         enemyMask = LayerMask.GetMask("Robot");
-
     }
     void Update() {
 
    
-        if(currentEnemy != null){
-            if(Vector3.Distance(currentEnemy.position, transform.position) > _attackRange){
-                currentEnemy = FindRandomEnemyWithinRange();
-            }
-            RotateTowardsEnemy();
-        }
-        else{
-            currentEnemy = defaultpos.transform;
-            RotateTowardsEnemy();
-        }
 
+        
+        RotateTowardsEnemy();
+        if(currentEnemy == null){
+            // sets the current currentEnemy we're looking at if we curently dont have one 
+            currentEnemy = FindRandomEnemyWithinRange();
+        } 
+        else{
+            // if we have an currentEnemy we check if his position is further away than our _attackRange
+            if(Vector3.Distance(currentEnemy.position, transform.position) > _attackRange){
+                // if the currentEnemy is out of _attackRange we set him to null
+                currentEnemy = null;
+            }
+        }
     }
     private void OnDrawGizmos() {
         Gizmos.DrawWireSphere (transform.position, _attackRange);
     }
 
     private void RotateTowardsEnemy() {
-        // calculate the vector direction from the towers head to the current enemy.
-        Vector3 directionToEnemy = (currentEnemy.position - _towerHead.position);
+        Vector3 directionToEnemy = Vector3.forward; // sets default rotation direction 
+        if(currentEnemy != null){
+            // changes rotation direction to the enemy if there is an enemy 
+            directionToEnemy = (currentEnemy.position - _towerHead.position);
+        }
 
+
+        // Pani
         // Create a Quaternion for the rotation towards the enemy, based on the direction vector
         Quaternion lookRotation = Quaternion.LookRotation(directionToEnemy);
 
@@ -53,17 +60,21 @@ public class CrossbowTower : MonoBehaviour
         // Apply the interplated rotation back toe the otwers head. This step vonverts the
         // Quaternion bach to Euler angles for straightforward applicat
         _towerHead.rotation = Quaternion.Euler(rotation);
+        // Pani ende
 
-        
     }
 
     private Transform FindRandomEnemyWithinRange(){
+        // checks if there are any coliders in the range of the _attackRange with the Layer enemyMask
         Collider[] enemiesAround = Physics.OverlapSphere(transform.position, _attackRange, enemyMask);
         if(enemiesAround.Length > 0){
-        return enemiesAround[Random.Range(0, enemiesAround.Length)].transform;
+            // returnes an random enemy in the given range if there are any
+            return enemiesAround[Random.Range(0, enemiesAround.Length)].transform;
         }
+
         else{
-            return defaultpos;
+            // if there are no enemies we return null
+            return null;
         }
     }
 }
