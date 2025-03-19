@@ -13,6 +13,14 @@ public class CrossbowTower : MonoBehaviour
     [SerializeField] private float rotationSpeed;
     [SerializeField] float _attackRange = 2.5f;
     [SerializeField] LayerMask enemyMask;
+    [SerializeField] GameObject gun_point;
+    [SerializeField] CrossbowVisuals crossbowVisuals;
+    private RaycastHit hitInfo;
+
+    void Awake()
+    {
+        crossbowVisuals = GetComponent<CrossbowVisuals>();
+    }
 
     void Start()
     {
@@ -20,7 +28,7 @@ public class CrossbowTower : MonoBehaviour
         enemyMask = LayerMask.GetMask("Robot");
     }
     void Update() {
-
+ 
    
 
         
@@ -34,6 +42,10 @@ public class CrossbowTower : MonoBehaviour
             if(Vector3.Distance(currentEnemy.position, transform.position) > _attackRange){
                 // if the currentEnemy is out of _attackRange we set him to null
                 currentEnemy = null;
+            }
+            else{
+                Attack();
+
             }
         }
     }
@@ -75,6 +87,15 @@ public class CrossbowTower : MonoBehaviour
         else{
             // if there are no enemies we return null
             return null;
+        }
+    }
+    protected Vector3 CalculateDirectionVector(Transform begin, Transform end){
+        return (end.position - begin.position).normalized;
+    }
+    void Attack(){
+        Vector3 directionToEnimey = CalculateDirectionVector(gun_point.transform, currentEnemy);
+        if(Physics.Raycast(gun_point.transform.position, directionToEnimey, out hitInfo, _attackRange)){
+            crossbowVisuals.RenderLaserVisuals(gun_point.transform.position, hitInfo.point);
         }
     }
 }
