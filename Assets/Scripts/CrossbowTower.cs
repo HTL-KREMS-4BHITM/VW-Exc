@@ -4,11 +4,10 @@ using UnityEngine.UIElements;
 public class CrossbowTower : MonoBehaviour
 {
     // Reference BasicEnemy GameObject
-    public Transform currentEnemy;
+    public Transform currentEnemy = null;
     // Reference tower_crossbow_head GameObject
     [Header("Tower Setup")]
-    [SerializeField]
-    private Transform _towerHead;
+    [SerializeField] private Transform _towerHead;
     // Set rotationSpeed to 10
     [SerializeField] private float rotationSpeed;
     [SerializeField] float _attackRange = 2.5f;
@@ -39,9 +38,10 @@ public class CrossbowTower : MonoBehaviour
         } 
         else{
             // if we have an currentEnemy we check if his position is further away than our _attackRange
-            if(Vector3.Distance(currentEnemy.position, transform.position) > _attackRange){
+            if(Vector3.Distance(transform.position, currentEnemy.position) > _attackRange){
                 // if the currentEnemy is out of _attackRange we set him to null
                 currentEnemy = null;
+                Debug.Log("enemy has left");
             }
             else{
                 Attack();
@@ -50,7 +50,7 @@ public class CrossbowTower : MonoBehaviour
         }
     }
     private void OnDrawGizmos() {
-        Gizmos.DrawWireSphere (transform.position, _attackRange);
+        Gizmos.DrawWireSphere (transform.position - new Vector3(0, 1.25f, 0), _attackRange);
     }
 
     private void RotateTowardsEnemy() {
@@ -80,6 +80,7 @@ public class CrossbowTower : MonoBehaviour
         // checks if there are any coliders in the range of the _attackRange with the Layer enemyMask
         Collider[] enemiesAround = Physics.OverlapSphere(transform.position, _attackRange, enemyMask);
         if(enemiesAround.Length > 0){
+            Debug.Log("enemy Found");
             // returnes an random enemy in the given range if there are any
             return enemiesAround[Random.Range(0, enemiesAround.Length)].transform;
         }
