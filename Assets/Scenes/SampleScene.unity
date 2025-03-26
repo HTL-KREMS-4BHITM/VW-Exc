@@ -459,7 +459,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentEnemy: {fileID: 0}
   _towerHead: {fileID: 8170956553376238205}
-  rotationSpeed: 5
+  rotationSpeed: 8
   _attackRange: 2.5
   enemyMask:
     serializedVersion: 2

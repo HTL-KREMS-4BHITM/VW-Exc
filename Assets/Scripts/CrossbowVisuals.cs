@@ -23,8 +23,8 @@ public class CrossbowVisuals : MonoBehaviour
         // Der Effekt soll 0.1 Sekunden dauern
 
         // Schalten Sie anschließend den _lineRenderer aus
+        yield return new WaitForSeconds(duration); 
         _attackVisuals.enabled = false;
 
-        yield return new WaitForSeconds(duration); 
     }
 }
