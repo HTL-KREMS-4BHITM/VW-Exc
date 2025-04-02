@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CannonTower : MonoBehaviour
@@ -8,13 +9,24 @@ public class CannonTower : MonoBehaviour
     [SerializeField] private Transform _towerHead;
     [SerializeField] private Transform _towerSlide;
     [SerializeField] private float rotationSpeed;
-    [SerializeField] float _attackRange = 2.5f;
-    [SerializeField] LayerMask enemyMask;
-    [SerializeField] GameObject gun_point;
+    [SerializeField] private float _attackRange = 2.5f;
+    [SerializeField] private LayerMask enemyMask;
+    [SerializeField] private GameObject gun_point;
+    [SerializeField] private float launchAngle;
+    [SerializeField] private float launchSpeed;
+    [SerializeField] private int trajectoryPoints;
+    private LineRenderer lineRenderer;
+    private float gravity = -9.81f;
 
 
 
 
+
+
+    void Awake()
+    {
+        lineRenderer=GetComponent<LineRenderer>();
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,7 +37,7 @@ public class CannonTower : MonoBehaviour
     void Update()
     {
     
-
+        
         RotateTowardsEnemy();
         if(currentEnemy == null){
             // sets the current currentEnemy we're looking at if we curently dont have one 
@@ -37,7 +49,10 @@ public class CannonTower : MonoBehaviour
                 // if the currentEnemy is out of _attackRange we set him to null
                 currentEnemy = null;
             }
-
+            else{
+                Debug.DrawLine(gun_point.transform.position, currentEnemy.transform.position);
+                DrawTrajectory();
+            }
         }
 
 
@@ -78,7 +93,7 @@ public class CannonTower : MonoBehaviour
     // Quaternion bach to Euler angles for straightforward applicat
     _towerHead.rotation = Quaternion.Euler(rotation);
     if(currentEnemy!= null){
-        _towerSlide.rotation=Quaternion.Lerp(_towerSlide.rotation, Quaternion.Euler(-45f, lookRotation.eulerAngles.y, lookRotation.eulerAngles.z), rotationSpeed*Time.deltaTime);
+        _towerSlide.rotation=Quaternion.RotateTowards(_towerSlide.rotation, lookRotation * Quaternion.Euler(launchAngle, 0, 0), rotationSpeed*Time.deltaTime);
     }
 
     // Pani ende
@@ -103,7 +118,46 @@ public class CannonTower : MonoBehaviour
 
 
 
-       private void OnDrawGizmos() {
-        Gizmos.DrawWireSphere (transform.position - new Vector3(0, 1.25f, 0), _attackRange);
+    private void OnDrawGizmos() {
+    Gizmos.DrawWireSphere (transform.position - new Vector3(0, 1.25f, 0), _attackRange);
+    }
+
+
+    void DrawTrajectory()
+    {
+        List<Vector3> pointsList = new List<Vector3>(); // Use a list instead of an array
+        float timeStep = 0.1f;
+
+        float angleRad = launchAngle * Mathf.Deg2Rad;
+        float initialVelocityX = launchSpeed * Mathf.Cos(angleRad);
+        float initialVelocityY = launchSpeed * Mathf.Sin(angleRad);
+
+        for (int i = 0; i < trajectoryPoints; i++)
+        {
+            float t = i * timeStep;
+            float x = initialVelocityX * t;
+            float y = initialVelocityY * t - 0.5f * gravity * t * t;
+
+            // Calculate world position
+            Vector3 pos = new Vector3(
+                gun_point.transform.position.x + x,
+                gun_point.transform.position.y - y,
+                gun_point.transform.position.z
+            );
+
+            pointsList.Add(pos);
+
+            // Stop if the projectile hits the ground (world-space Y check)
+            if (pos.y < 0) // Use actual ground height here (e.g., `pos.y < groundHeight`)
+                break;
+        }
+
+        // Instantiate prefabs ONLY for valid points
+
+
+        // Optional: Update LineRenderer with the list
+        lineRenderer.positionCount = pointsList.Count;
+        lineRenderer.SetPositions(pointsList.ToArray());
     }
 }
+

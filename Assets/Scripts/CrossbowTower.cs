@@ -44,9 +44,6 @@ public class CrossbowTower : MonoBehaviour
                 Debug.Log("enemy has left");
             }
             else{
-                Debug.DrawLine(_towerHead.transform.position ,_towerHead.transform.forward *100);
-                Debug.DrawLine(gun_point.transform.position ,currentEnemy.transform.position );
-                Debug.Log(Vector3.Angle(_towerHead.transform.forward, CalculateDirectionVector(gun_point.transform, currentEnemy)));
                 if(Vector3.Angle(_towerHead.transform.forward, CalculateDirectionVector(gun_point.transform, currentEnemy))< 5f){
                     Attack();
 
