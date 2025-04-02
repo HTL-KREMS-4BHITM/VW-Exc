@@ -28,9 +28,6 @@ public class CrossbowTower : MonoBehaviour
     }
     void Update() {
  
-   
-
-        
         RotateTowardsEnemy();
         if(currentEnemy == null){
             // sets the current currentEnemy we're looking at if we curently dont have one 
@@ -38,7 +35,7 @@ public class CrossbowTower : MonoBehaviour
         } 
         else{
             // if we have an currentEnemy we check if his position is further away than our _attackRange
-            if(Vector3.Distance(transform.position, currentEnemy.position) > _attackRange){
+            if(Vector3.Distance(transform.position, currentEnemy.position) > _attackRange +1f){
                 // if the currentEnemy is out of _attackRange we set him to null
                 currentEnemy = null;
                 Debug.Log("enemy has left");
